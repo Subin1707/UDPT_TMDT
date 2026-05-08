@@ -18,6 +18,13 @@ He thong thuong mai dien tu phan tan theo kien truc microservices, ho tro xu ly 
 - `frontend-react`: dashboard ReactJS.
 - `docker/docker-compose.yml`: PostgreSQL va Redis.
 - `docs`: tai lieu kien truc, database va sequence diagram.
+- `docs/feature-roadmap.md`: backlog va phan chia chuc nang theo vai tro.
+
+## Feature Roadmap
+
+Xem chi tiet cac chuc nang theo CUSTOMER, ADMIN, SHIPPER va phan chia cho tung microservice tai:
+
+- `docs/feature-roadmap.md`
 
 ## Build / Install
 
@@ -123,7 +130,7 @@ export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 
 ```bash
 export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-./mvnw -pl services/analytics-service spring-boot:run
+./mvnw -pl services/delivery-service spring-boot:run
 ```
 
 ## Chay Ha Tang
