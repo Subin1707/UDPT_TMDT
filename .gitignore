@@ -1,0 +1,8 @@
+.m2/
+.tools/
+target/
+**/target/
+node_modules/
+dist/
+.env
+.env.local
