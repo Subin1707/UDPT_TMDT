@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useLocation, Link } from 'react-router-dom'
-import { fetchCart } from '../features/cartSlice'
+import { fetchCart, removeCartItem, updateCartItem } from '../features/cartSlice'
 import './Cart.css'
 
 const Cart = () => {
@@ -20,9 +20,25 @@ const Cart = () => {
   }, [dispatch, token, navigate, location.pathname])
 
   const orderTotal = items.reduce((sum, item) => {
-    const price = Number(item.price || item.product_price || item.unit_price || 0)
+    const price = Number(item.price || item.product_price || item.unit_price || item.unitPrice || 0)
     return sum + price * (item.quantity || 1)
   }, 0)
+
+  const getProductId = (item) => item.productId || item.product_id || item.id
+
+  const handleQuantityChange = (item, nextQuantity) => {
+    const productId = getProductId(item)
+    if (!productId) {
+      return
+    }
+
+    if (nextQuantity <= 0) {
+      dispatch(removeCartItem(productId))
+      return
+    }
+
+    dispatch(updateCartItem({ productId, quantity: nextQuantity }))
+  }
 
   if (loading) {
     return <div className="page-loader">Loading cart...</div>
@@ -61,8 +77,34 @@ const Cart = () => {
                   <h3>{item.name || item.product_name || 'Product'}</h3>
                   <p>{item.description || item.product_description || 'No description available.'}</p>
                   <div className="cart-item-meta">
-                    <span>Qty: {item.quantity || 1}</span>
-                    <span>${Number(item.price || item.product_price || 0).toFixed(2)}</span>
+                    <span>${Number(item.price || item.product_price || item.unit_price || item.unitPrice || 0).toFixed(2)}</span>
+                    <div className="cart-quantity-control">
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(item, (item.quantity || 1) - 1)}
+                        aria-label="Decrease quantity"
+                        disabled={loading}
+                      >
+                        -
+                      </button>
+                      <span>{item.quantity || 1}</span>
+                      <button
+                        type="button"
+                        onClick={() => handleQuantityChange(item, (item.quantity || 1) + 1)}
+                        aria-label="Increase quantity"
+                        disabled={loading}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <button
+                      type="button"
+                      className="cart-remove-button"
+                      onClick={() => dispatch(removeCartItem(getProductId(item)))}
+                      disabled={loading}
+                    >
+                      Remove
+                    </button>
                   </div>
                 </div>
               </div>

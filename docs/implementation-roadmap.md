@@ -1,43 +1,68 @@
 # Implementation Roadmap
 
-## Giai doan 1: Nen tang kien truc
+Roadmap này chuyển CRUD theo vai trò trong [feature-roadmap.md](feature-roadmap.md) thành các giai đoạn triển khai kỹ thuật.
 
-- Hoan thien Maven multi-module.
-- Chay rieng tung service tren port doc lap.
-- Dinh tuyen request qua `api-gateway`.
-- Tao response format dung chung trong `shared-lib`.
+## Giai Đoạn 1: Chuẩn Hóa Nền Tảng
 
-## Giai doan 2: Authentication
+- Hoàn thiện Maven multi-module và đảm bảo build được toàn bộ backend.
+- Đồng bộ endpoint giữa frontend và backend.
+- Chuẩn hóa response format trong `shared-lib`.
+- Chuẩn hóa role thành `ADMIN`, `CUSTOMER`, `SHIPPER`.
+- Thống nhất rule soft delete cho `users`, `products`, `orders`, `payments`.
 
-- Bo sung entity `User`, `Role`, `RefreshToken`.
-- Luu user vao PostgreSQL bang Spring Data JPA.
-- Ma hoa mat khau bang BCrypt.
-- Xac thuc JWT tai Gateway.
-- Phan quyen `USER`, `ADMIN`.
+## Giai Đoạn 2: Auth, User Và Role Security
 
-## Giai doan 3: Product, Cart, Order
+- `auth-service`: đăng ký, đăng nhập, đăng xuất, refresh token, quên mật khẩu.
+- `auth-service`: mã hóa mật khẩu bằng BCrypt.
+- `auth-service`: lưu user, role, refresh token bằng Spring Data JPA.
+- `api-gateway`: validate JWT và forward identity header sang service phía sau.
+- `api-gateway`: phân quyền route theo `ROLE_ADMIN`, `ROLE_CUSTOMER`, `ROLE_SHIPPER`.
+- `user-service`: profile, đổi mật khẩu, avatar, soft delete tài khoản.
+- `user-service`: quản lý địa chỉ giao hàng.
+- `user-service`: admin quản lý user và shipper.
 
-- Xay dung CRUD san pham, category, inventory.
-- Xay dung gio hang theo user.
-- Tao don hang tu gio hang.
-- Tru ton kho khi don hang duoc xac nhan.
+## Giai Đoạn 3: Catalog Và Inventory
 
-## Giai doan 4: Payment va Delivery
+- `product-service`: CRUD category.
+- `product-service`: CRUD brand.
+- `product-service`: CRUD product.
+- `product-service`: upload, cập nhật, xóa ảnh sản phẩm.
+- `product-service`: tìm kiếm, lọc, sản phẩm hot, flash sale.
+- `product-service`: CRUD inventory và tự khóa sản phẩm hết hàng.
+- `product-service`: wishlist và review.
 
-- Mo phong thanh toan `COD`, `MOMO`, `VNPAY`.
-- Cap nhat trang thai don hang sau thanh toan.
-- Tao tracking giao hang.
-- Dong bo trang thai `PACKING`, `SHIPPING`, `COMPLETED`.
+## Giai Đoạn 4: Cart Và Order
 
-## Giai doan 5: Realtime Notification
+- `cart-service`: thêm sản phẩm, xem giỏ hàng, cập nhật số lượng, xóa item, clear cart.
+- `order-service`: tạo đơn hàng từ giỏ hàng.
+- `order-service`: xem đơn, chi tiết đơn, lịch sử mua hàng.
+- `order-service`: hủy đơn bằng trạng thái `CANCELLED`, không xóa vật lý.
+- `order-service`: admin xác nhận đơn, chuyển trạng thái, phân công shipper.
+- `order-service`: publish event khi trạng thái đơn thay đổi.
 
-- Gui thong bao qua WebSocket khi don hang thay doi.
-- Luu notification vao database.
-- Hien thi realtime tren dashboard React.
+## Giai Đoạn 5: Payment, Delivery Và Notification
 
-## Giai doan 6: Dashboard, Docker, Testing
+- `payment-service`: tạo payment, xem lịch sử payment, transaction.
+- `payment-service`: xác nhận thanh toán online, hoàn tiền bằng trạng thái `REFUNDED`.
+- `delivery-service`: shipper xem đơn cần giao, nhận/từ chối đơn.
+- `delivery-service`: cập nhật trạng thái giao hàng, giao thành công, giao thất bại.
+- `delivery-service`: GPS tracking realtime và lịch sử giao hàng.
+- `notification-service`: CRUD notification, đánh dấu đã đọc, gửi thông báo hàng loạt.
+- `notification-service`: WebSocket realtime cho order, delivery và notification.
 
-- Hoan thien dashboard quan tri.
-- Them thong ke doanh thu, don hang, ton kho.
-- Docker hoa tung service.
-- Viet unit test va integration test cho flow dat hang.
+## Giai Đoạn 6: Analytics, Admin Và Vận Hành
+
+- `analytics-service`: dashboard doanh thu.
+- `analytics-service`: biểu đồ thống kê, sản phẩm bán chạy, realtime analytics.
+- Frontend customer: auth, profile, product, cart, checkout, order, wishlist, review, notification.
+- Frontend admin: user, role, category, brand, product, inventory, order, payment, delivery, voucher, review, notification, analytics.
+- Frontend shipper: profile, đơn cần giao, tracking, lịch sử giao hàng, thu nhập.
+- System management: xem log, monitoring service, restart service, backup database.
+
+## Ưu Tiên Gần Nhất
+
+1. Sửa build backend/Maven wrapper để CI local chạy ổn định.
+2. Đồng bộ các API đang lệch: product detail, cart, order list.
+3. Thay seed/in-memory bằng persistence thật cho auth, product, cart, order.
+4. Bật JWT validation ở gateway.
+5. Mở rộng CRUD theo từng service, bắt đầu từ customer flow: register -> login -> products -> cart -> order -> payment.

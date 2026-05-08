@@ -3,10 +3,13 @@ setlocal
 
 set "ROOT=%~dp0"
 set "MAVEN=%ROOT%.tools\apache-maven-3.9.15\bin\mvn.cmd"
+set "SYSTEM_MAVEN=E:\apache-maven-3.9.15\bin\mvn.cmd"
 set "LOCAL_REPO=%ROOT%.m2\repository"
 
 if exist "%MAVEN%" (
   call "%MAVEN%" "-Dmaven.repo.local=%LOCAL_REPO%" %*
+) else if exist "%SYSTEM_MAVEN%" (
+  call "%SYSTEM_MAVEN%" "-Dmaven.repo.local=%LOCAL_REPO%" %*
 ) else (
   call mvn %*
 )

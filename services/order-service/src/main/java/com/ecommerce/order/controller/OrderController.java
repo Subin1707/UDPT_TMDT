@@ -18,6 +18,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 public class OrderController {
+    @GetMapping
+    public ApiResponse<List<Order>> getAll() {
+        return ApiResponse.ok("Order list", OrderSeeder.findAll());
+    }
+
     @GetMapping("/user/{userId}")
     public ApiResponse<List<Order>> getByUser(@PathVariable Long userId) {
         return ApiResponse.ok("Order list", OrderSeeder.findByUserId(userId));
@@ -25,7 +30,9 @@ public class OrderController {
 
     @PostMapping
     public ApiResponse<Order> create(@RequestBody CreateOrderRequest request) {
-        Order order = new Order(System.currentTimeMillis(), request.userId(), OrderStatus.CREATED, Instant.now());
+        Long userId = request.userId() == null ? 2L : request.userId();
+        Order order = new Order(System.currentTimeMillis(), userId, OrderStatus.CREATED, Instant.now());
+        OrderSeeder.add(order);
         return ApiResponse.ok("Order created", order);
     }
 }

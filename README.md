@@ -19,12 +19,15 @@ He thong thuong mai dien tu phan tan theo kien truc microservices, ho tro xu ly 
 - `docker/docker-compose.yml`: PostgreSQL va Redis.
 - `docs`: tai lieu kien truc, database va sequence diagram.
 - `docs/feature-roadmap.md`: backlog va phan chia chuc nang theo vai tro.
+- `docs/demo-requirements.md`: kich ban demo va pham vi bao cao.
 
-## Feature Roadmap
+## Feature Roadmap / CRUD Theo Vai Tro
 
-Xem chi tiet cac chuc nang theo CUSTOMER, ADMIN, SHIPPER va phan chia cho tung microservice tai:
+Xem chi tiet CRUD day du theo CUSTOMER, ADMIN, SHIPPER, soft delete enterprise, role security va phan chia cho tung microservice tai:
 
 - `docs/feature-roadmap.md`
+- `docs/implementation-roadmap.md`
+- `docs/demo-requirements.md`
 
 ## Build / Install
 
@@ -74,6 +77,9 @@ Mo them cac cua so PowerShell khac de chay service can dung:
 .\mvnw.cmd -pl services/delivery-service spring-boot:run
 .\mvnw.cmd -pl services/analytics-service spring-boot:run
 ```
+
+Neu vua sua API gio hang, can dung va chay lai `services/cart-service` va `services/api-gateway`.
+Cart service luu du lieu vao H2 file database tai `services/cart-service/data/cart-db`.
 
 ### Linux / CodeSpace
 

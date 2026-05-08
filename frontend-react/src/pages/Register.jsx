@@ -34,7 +34,7 @@ const Register = () => {
 
     try {
       await dispatch(register({
-        full_name: formData.full_name,
+        fullName: formData.full_name,
         email: formData.email,
         phone: formData.phone,
         password: formData.password,

@@ -66,7 +66,7 @@ const Checkout = () => {
   }
 
   const orderTotal = items.reduce((sum, item) => {
-    const price = Number(item.price || item.product_price || item.unit_price || 0)
+    const price = Number(item.price || item.product_price || item.unit_price || item.unitPrice || 0)
     return sum + price * (item.quantity || 1)
   }, 0)
 

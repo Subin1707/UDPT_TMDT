@@ -53,7 +53,7 @@ const authSlice = createSlice({
         state.user = {
           email: authData.email,
           role: authData.role,
-          full_name: authData.full_name,
+          full_name: authData.fullName || authData.full_name || authData.email,
         }
         state.token = authData.accessToken
         localStorage.setItem('token', authData.accessToken)
@@ -72,7 +72,7 @@ const authSlice = createSlice({
         state.user = {
           email: authData.email,
           role: authData.role,
-          full_name: authData.full_name,
+          full_name: authData.fullName || authData.full_name || authData.email,
         }
         state.token = authData.accessToken
         localStorage.setItem('token', authData.accessToken)

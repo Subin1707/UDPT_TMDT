@@ -30,6 +30,13 @@ public class ProductSeeder {
         return PRODUCTS;
     }
 
+    public static Product findById(Long id) {
+        return PRODUCTS.stream()
+                .filter(product -> product.id().equals(id))
+                .findFirst()
+                .orElse(null);
+    }
+
     public static List<String> findAllCategories() {
         return CATEGORIES;
     }
