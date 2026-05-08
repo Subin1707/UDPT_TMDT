@@ -1,0 +1,92 @@
+.header-bar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.88);
+  border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+}
+
+.header-inner {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.brand-link {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.brand-link:hover {
+  color: #1d4ed8;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.nav-link,
+.auth-button,
+.cta-button {
+  color: #475569;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.nav-link:hover,
+.auth-button:hover,
+.cta-button:hover {
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.85rem 1.2rem;
+  background: #2563eb;
+  color: #ffffff;
+  border-radius: 999px;
+}
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #334155;
+}
+
+.cart-badge {
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -0.55rem;
+  right: -0.55rem;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 0.7rem;
+  line-height: 1;
+  padding: 0.22rem 0.45rem;
+  border-radius: 999px;
+}
+
+.logout-button {
+  color: #ef4444;
+}
+
+.logout-button:hover {
+  color: #dc2626;
+}
