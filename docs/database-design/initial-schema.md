@@ -1,5 +1,10 @@
 # Initial Database Design
 
+**Database:** Aiven MySQL  
+**Connection URL:** jdbc:mysql://thuongmaidientu1-quyenthaoxyz123-6026.k.aivencloud.com:25291/defaultdb?ssl-mode=REQUIRED  
+**Username:** avnadmin  
+**Password:** ${DB_PASSWORD} (set in environment variables)  
+
 Bang nen tang:
 
 - `users(id, full_name, email, password_hash, status, created_at)`
@@ -15,3 +20,5 @@ Bang nen tang:
 - `payments(id, order_id, amount, method, status, created_at)`
 - `deliveries(id, order_id, status, current_location, updated_at)`
 - `notifications(id, user_id, type, message, read_at, created_at)`
+
+For full DDL, see [schema.sql](schema.sql).
