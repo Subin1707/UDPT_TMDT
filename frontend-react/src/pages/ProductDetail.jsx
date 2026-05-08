@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { fetchProductById } from '../features/productSlice'
 import { addToCart } from '../features/cartSlice'
 import './ProductDetail.css'
@@ -8,6 +8,7 @@ import './ProductDetail.css'
 const ProductDetail = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { id } = useParams()
   const { currentProduct, loading, error } = useSelector((state) => state.products)
   const { token } = useSelector((state) => state.auth)
@@ -21,7 +22,7 @@ const ProductDetail = () => {
 
   const handleAddToCart = async () => {
     if (!token) {
-      navigate('/login')
+      navigate('/login', { state: { from: location.pathname } })
       return
     }
 

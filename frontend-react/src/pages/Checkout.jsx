@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { fetchCart } from '../features/cartSlice'
 import { createOrder } from '../features/orderSlice'
 import './Checkout.css'
@@ -8,6 +8,7 @@ import './Checkout.css'
 const Checkout = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { items, loading, error } = useSelector((state) => state.cart)
   const { token } = useSelector((state) => state.auth)
   const [form, setForm] = useState({
@@ -23,9 +24,9 @@ const Checkout = () => {
     if (token) {
       dispatch(fetchCart())
     } else {
-      navigate('/login')
+      navigate('/login', { state: { from: location.pathname } })
     }
-  }, [dispatch, token, navigate])
+  }, [dispatch, token, navigate, location.pathname])
 
   const handleChange = (e) => {
     setForm({

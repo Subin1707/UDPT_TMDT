@@ -51,7 +51,7 @@ const Header = () => {
 
               <div className="user-badge">
                 <User size={20} />
-                <span>{user.full_name}</span>
+                <span>{user.full_name || user.email || 'User'}</span>
                 <button
                   onClick={handleLogout}
                   className="logout-button"

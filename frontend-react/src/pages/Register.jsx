@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { register } from '../features/authSlice'
 import './Register.css'
 
@@ -15,6 +15,7 @@ const Register = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { loading, error } = useSelector((state) => state.auth)
 
   const handleChange = (e) => {
@@ -38,7 +39,8 @@ const Register = () => {
         phone: formData.phone,
         password: formData.password,
       })).unwrap()
-      navigate('/')
+      const redirectTo = location.state?.from || '/'
+      navigate(redirectTo)
     } catch (err) {
       console.error('Registration failed:', err)
     }

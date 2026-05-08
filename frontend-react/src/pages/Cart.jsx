@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { fetchCart } from '../features/cartSlice'
 import './Cart.css'
 
 const Cart = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { items, total, loading, error } = useSelector((state) => state.cart)
   const { token } = useSelector((state) => state.auth)
 
@@ -14,9 +15,9 @@ const Cart = () => {
     if (token) {
       dispatch(fetchCart())
     } else {
-      navigate('/login')
+      navigate('/login', { state: { from: location.pathname } })
     }
-  }, [dispatch, token, navigate])
+  }, [dispatch, token, navigate, location.pathname])
 
   const orderTotal = items.reduce((sum, item) => {
     const price = Number(item.price || item.product_price || item.unit_price || 0)

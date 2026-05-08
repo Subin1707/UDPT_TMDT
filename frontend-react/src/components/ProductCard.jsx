@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Star, ShoppingCart } from 'lucide-react'
 import { addToCart } from '../features/cartSlice'
@@ -8,11 +8,12 @@ import './ProductCard.css'
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { token } = useSelector((state) => state.auth)
 
   const handleAddToCart = async () => {
     if (!token) {
-      navigate('/login')
+      navigate('/login', { state: { from: location.pathname } })
       return
     }
 

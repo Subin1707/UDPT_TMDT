@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { login } from '../features/authSlice'
 import './Login.css'
 
@@ -12,6 +12,7 @@ const Login = () => {
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
   const { loading, error } = useSelector((state) => state.auth)
 
   const handleChange = (e) => {
@@ -25,7 +26,8 @@ const Login = () => {
     e.preventDefault()
     try {
       await dispatch(login(formData)).unwrap()
-      navigate('/')
+      const redirectTo = location.state?.from || '/'
+      navigate(redirectTo)
     } catch (err) {
       console.error('Login failed:', err)
     }

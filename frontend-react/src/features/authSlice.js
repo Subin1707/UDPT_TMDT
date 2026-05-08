@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080' // Adjust to your API Gateway
+const API_BASE_URL = '/api'
 
 export const login = createAsyncThunk(
   'auth/login',
@@ -41,9 +41,13 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false
-        state.user = action.payload.user
-        state.token = action.payload.token
-        localStorage.setItem('token', action.payload.token)
+        const authData = action.payload.data
+        state.user = {
+          email: authData.email,
+          role: authData.role,
+        }
+        state.token = authData.accessToken
+        localStorage.setItem('token', authData.accessToken)
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false
@@ -54,9 +58,13 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false
-        state.user = action.payload.user
-        state.token = action.payload.token
-        localStorage.setItem('token', action.payload.token)
+        const authData = action.payload.data
+        state.user = {
+          email: authData.email,
+          role: authData.role,
+        }
+        state.token = authData.accessToken
+        localStorage.setItem('token', authData.accessToken)
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false
