@@ -34,13 +34,14 @@ Can chay lenh `install` it nhat mot lan truoc khi run tung service, vi cac servi
 Vi day la multi-module microservices, khong chay truc tiep bang `.\mvnw.cmd spring-boot:run` o root. Can chon module bang `-pl`.
 
 Chay API Gateway tren `http://localhost:8080`:
+$env:Path += ";E:\apache-maven-3.9.15\bin"
 
 ```powershell
 .\mvnw.cmd -pl services/api-gateway spring-boot:run
 ```
 
 Mo them cac cua so PowerShell khac de chay service can dung:
-
+chay lenh nay trc 
 ```powershell
 .\mvnw.cmd -pl services/auth-service spring-boot:run
 .\mvnw.cmd -pl services/product-service spring-boot:run
