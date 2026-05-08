@@ -10,6 +10,7 @@ const Header = () => {
   const { items } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isAdmin = user?.role === 'ADMIN' || user?.isAdmin
 
   const handleLogout = () => {
     dispatch(logout())
@@ -20,7 +21,8 @@ const Header = () => {
     <header className="header-bar">
       <div className="header-inner">
         <Link to="/" className="brand-link">
-          E-Commerce
+          <span>E-Commerce</span>
+          <small className="brand-tagline">Marketplace phân tán, trải nghiệm mượt mà</small>
         </Link>
 
         <nav className="nav-links">
@@ -40,6 +42,12 @@ const Header = () => {
               <Link to="/orders" className="nav-link">
                 Orders
               </Link>
+
+              {isAdmin && (
+                <Link to="/admin" className="nav-link">
+                  Admin
+                </Link>
+              )}
 
               <div className="user-badge">
                 <User size={20} />

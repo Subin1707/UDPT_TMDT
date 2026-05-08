@@ -8,3 +8,7 @@ spring:
 security:
   jwt:
     secret: "change-this-secret-key-to-at-least-32-characters"
+
+app:
+  default-admin-email: admin@ecommerce.com
+  default-admin-password: Admin@123

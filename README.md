@@ -73,6 +73,11 @@ npm.cmd install
 npm.cmd run dev
 ```
 
+Demo admin login:
+
+- Email: `admin@ecommerce.com`
+- Password: `Admin@123`
+
 Frontend hien co prototype cac nhom man hinh:
 
 - Pre-login: splash, welcome, language, login, register, OTP, forgot password.

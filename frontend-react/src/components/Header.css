@@ -2,9 +2,10 @@
   position: fixed;
   inset: 0 0 auto 0;
   z-index: 50;
-  backdrop-filter: blur(16px);
+  backdrop-filter: blur(18px);
   background: rgba(255, 255, 255, 0.88);
   border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.06);
 }
 
 .header-inner {
@@ -17,6 +18,9 @@
 }
 
 .brand-link {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.12rem;
   font-size: 1.35rem;
   font-weight: 700;
   color: #2563eb;
@@ -25,6 +29,12 @@
 
 .brand-link:hover {
   color: #1d4ed8;
+}
+
+.brand-tagline {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
 }
 
 .nav-links {
@@ -40,7 +50,13 @@
   color: #475569;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+.nav-link,
+.auth-button {
+  padding: 0.75rem 0.9rem;
+  border-radius: 999px;
 }
 
 .nav-link:hover,
@@ -48,16 +64,18 @@
 .cta-button:hover {
   color: #1d4ed8;
   transform: translateY(-1px);
+  background: rgba(37, 99, 235, 0.08);
 }
 
 .cta-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.85rem 1.2rem;
-  background: #2563eb;
+  padding: 0.85rem 1.3rem;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
   color: #ffffff;
   border-radius: 999px;
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.18);
 }
 
 .user-badge {

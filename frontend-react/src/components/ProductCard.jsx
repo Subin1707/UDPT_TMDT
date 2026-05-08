@@ -1,16 +1,33 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import { Star, ShoppingCart } from 'lucide-react'
+import { addToCart } from '../features/cartSlice'
 import './ProductCard.css'
 
 const ProductCard = ({ product }) => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { token } = useSelector((state) => state.auth)
+
+  const handleAddToCart = async () => {
+    if (!token) {
+      navigate('/login')
+      return
+    }
+
+    await dispatch(addToCart({ productId: product.id, quantity: 1 }))
+  }
+
   return (
     <div className="product-card">
-      <img
-        src={product.thumbnail_url || '/placeholder.jpg'}
-        alt={product.name}
-        className="product-image"
-      />
+      <div className="product-card-image-wrap">
+        <img
+          src={product.thumbnail_url || '/placeholder.jpg'}
+          alt={product.name}
+          className="product-image"
+        />
+      </div>
       <div className="product-content">
         <h3 className="product-name">
           <Link to={`/products/${product.id}`} className="product-link">
@@ -26,7 +43,7 @@ const ProductCard = ({ product }) => {
         </div>
         <div className="flex items-center justify-between gap-3">
           <span className="product-price">${product.price}</span>
-          <button className="product-action">
+          <button className="product-action" onClick={handleAddToCart}>
             <ShoppingCart size={16} />
             Add to Cart
           </button>
