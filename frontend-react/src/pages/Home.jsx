@@ -8,6 +8,7 @@ import './Home.css'
 const Home = () => {
   const dispatch = useDispatch()
   const { items: products, loading } = useSelector((state) => state.products)
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     dispatch(fetchProducts({}))
@@ -31,9 +32,15 @@ const Home = () => {
               <Link to="/products" className="primary-button">
                 Khám phá sản phẩm
               </Link>
-              <Link to="/login" className="secondary-button">
-                Đăng nhập ngay
-              </Link>
+              {!user ? (
+                <Link to="/login" className="secondary-button">
+                  Đăng nhập ngay
+                </Link>
+              ) : (
+                <Link to="/orders" className="secondary-button">
+                  Xem đơn hàng
+                </Link>
+              )}
             </div>
           </div>
           <div className="hero-panel">

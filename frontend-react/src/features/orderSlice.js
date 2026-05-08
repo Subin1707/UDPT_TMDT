@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = '/api'
 
 export const createOrder = createAsyncThunk(
   'orders/createOrder',
@@ -41,7 +41,7 @@ const orderSlice = createSlice({
       })
       .addCase(createOrder.fulfilled, (state, action) => {
         state.loading = false
-        state.currentOrder = action.payload
+        state.currentOrder = action.payload.data || action.payload
       })
       .addCase(createOrder.rejected, (state, action) => {
         state.loading = false
@@ -52,7 +52,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrders.fulfilled, (state, action) => {
         state.loading = false
-        state.orders = action.payload
+        state.orders = action.payload.data || []
       })
       .addCase(fetchOrders.rejected, (state, action) => {
         state.loading = false

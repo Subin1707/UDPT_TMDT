@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = '/api'
 
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
@@ -43,8 +43,8 @@ const productSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false
-        state.items = action.payload.products
-        state.pagination = action.payload.pagination
+        state.items = action.payload.data || []
+        state.pagination = action.payload.pagination || { page: 1, limit: 12, total: 0 }
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false
@@ -55,7 +55,7 @@ const productSlice = createSlice({
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.loading = false
-        state.currentProduct = action.payload
+        state.currentProduct = action.payload.data || action.payload
       })
       .addCase(fetchProductById.rejected, (state, action) => {
         state.loading = false

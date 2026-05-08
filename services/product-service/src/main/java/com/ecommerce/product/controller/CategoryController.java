@@ -1,5 +1,6 @@
 package com.ecommerce.product.controller;
 
+import com.ecommerce.product.seed.ProductSeeder;
 import com.ecommerce.shared.response.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,6 @@ import java.util.List;
 public class CategoryController {
     @GetMapping
     public ApiResponse<List<String>> findAll() {
-        return ApiResponse.ok("Categories", List.of("Electronics", "Fashion", "Home"));
+        return ApiResponse.ok("Categories", ProductSeeder.findAllCategories());
     }
 }

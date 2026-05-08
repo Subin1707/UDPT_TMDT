@@ -21,11 +21,24 @@ He thong thuong mai dien tu phan tan theo kien truc microservices, ho tro xu ly 
 
 ## Build / Install
 
+### Windows PowerShell
+
 Dung PowerShell tai thu muc root:
 
 ```powershell
 .\mvnw.cmd -DskipTests install
 ```
+
+### Linux / CodeSpace
+
+Dung Bash tai thu muc root:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -DskipTests install
+```
+
+---
 
 Can chay lenh `install` it nhat mot lan truoc khi run tung service, vi cac service phu thuoc vao module `shared-lib`.
 
@@ -33,15 +46,17 @@ Can chay lenh `install` it nhat mot lan truoc khi run tung service, vi cac servi
 
 Vi day la multi-module microservices, khong chay truc tiep bang `.\mvnw.cmd spring-boot:run` o root. Can chon module bang `-pl`.
 
+### Windows PowerShell
+
 Chay API Gateway tren `http://localhost:8080`:
-$env:Path += ";E:\apache-maven-3.9.15\bin"
 
 ```powershell
+$env:Path += ";E:\apache-maven-3.9.15\bin"
 .\mvnw.cmd -pl services/api-gateway spring-boot:run
 ```
 
 Mo them cac cua so PowerShell khac de chay service can dung:
-chay lenh nay trc 
+
 ```powershell
 .\mvnw.cmd -pl services/auth-service spring-boot:run
 .\mvnw.cmd -pl services/product-service spring-boot:run
@@ -51,6 +66,64 @@ chay lenh nay trc
 .\mvnw.cmd -pl services/notification-service spring-boot:run
 .\mvnw.cmd -pl services/delivery-service spring-boot:run
 .\mvnw.cmd -pl services/analytics-service spring-boot:run
+```
+
+### Linux / CodeSpace
+
+Truoc tien, chay lenh install:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -DskipTests install
+```
+
+Chay API Gateway tren `http://localhost:8080`:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/api-gateway spring-boot:run
+```
+
+Mo them terminal khac de chay service can dung:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/auth-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/product-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/cart-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/order-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/payment-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/notification-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/delivery-service spring-boot:run
+```
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/analytics-service spring-boot:run
 ```
 
 ## Chay Ha Tang
@@ -94,6 +167,8 @@ Khi chay dev, frontend React dung Vite proxy trong `frontend-react/vite.config.j
 React 5173 -> /api/* -> API Gateway 8080 -> Product/Auth/Order services
 ```
 
+### Windows PowerShell
+
 Vi du de man hinh React lay san pham tu backend:
 
 1. Terminal 1:
@@ -113,6 +188,32 @@ Vi du de man hinh React lay san pham tu backend:
 ```powershell
 cd frontend-react
 npm.cmd run dev
+```
+
+### Linux / CodeSpace
+
+Vi du de man hinh React lay san pham tu backend:
+
+1. Terminal 1:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/api-gateway spring-boot:run
+```
+
+2. Terminal 2:
+
+```bash
+export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+./mvnw -pl services/product-service spring-boot:run
+```
+
+3. Terminal 3:
+
+```bash
+cd frontend-react
+npm install
+npm run dev
 ```
 
 Mo:

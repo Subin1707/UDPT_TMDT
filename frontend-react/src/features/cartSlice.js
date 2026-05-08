@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 
-const API_BASE_URL = 'http://localhost:8080'
+const API_BASE_URL = '/api'
 
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
@@ -46,8 +46,9 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.loading = false
-        state.items = action.payload.items
-        state.total = action.payload.total
+        const cartData = action.payload.data || {}
+        state.items = cartData.items || []
+        state.total = cartData.total || 0
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.loading = false
@@ -58,8 +59,9 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.loading = false
-        state.items = action.payload.items
-        state.total = action.payload.total
+        const cartData = action.payload.data || {}
+        state.items = cartData.items || []
+        state.total = cartData.total || 0
       })
       .addCase(addToCart.rejected, (state, action) => {
         state.loading = false
