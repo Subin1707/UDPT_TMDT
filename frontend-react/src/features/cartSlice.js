@@ -1,6 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { cartAPI } from '../services/api'
 
+const normalizeCartItem = (item) => ({
+  id: item.productId || item.id,
+  name: item.name || item.product?.name || 'Product',
+  quantity: item.quantity || 0,
+  price: item.unitPrice ?? item.price ?? item.product?.price ?? 0,
+  product: item.product || null,
+})
+
+const normalizeItems = (items) => Array.isArray(items) ? items.map(normalizeCartItem) : []
+
+const calculateTotal = (items) => normalizeItems(items).reduce((sum, item) => sum + item.price * item.quantity, 0)
+
 export const fetchCart = createAsyncThunk(
   'cart/fetchCart',
   async (_, { rejectWithValue }) => {
@@ -82,8 +94,11 @@ const cartSlice = createSlice({
       })
       .addCase(fetchCart.fulfilled, (state, action) => {
         state.isLoading = false
-        state.items = action.payload.items || []
-        state.total = action.payload.total || 0
+        const items = Array.isArray(action.payload)
+          ? normalizeItems(action.payload)
+          : normalizeItems(action.payload?.items)
+        state.items = items
+        state.total = action.payload?.total ?? calculateTotal(items)
       })
       .addCase(fetchCart.rejected, (state, action) => {
         state.isLoading = false
@@ -95,10 +110,18 @@ const cartSlice = createSlice({
       })
       .addCase(addToCart.fulfilled, (state, action) => {
         state.isLoading = false
-        // Update cart items and total from response
-        if (action.payload.items) {
-          state.items = action.payload.items
-          state.total = action.payload.total
+        if (Array.isArray(action.payload)) {
+          state.items = normalizeItems(action.payload)
+          state.total = calculateTotal(state.items)
+        } else if (action.payload?.productId || action.payload?.id) {
+          const newItem = normalizeCartItem(action.payload)
+          const existingIndex = state.items.findIndex((item) => item.id === newItem.id)
+          if (existingIndex !== -1) {
+            state.items[existingIndex] = newItem
+          } else {
+            state.items.push(newItem)
+          }
+          state.total = calculateTotal(state.items)
         }
       })
       .addCase(addToCart.rejected, (state, action) => {
@@ -111,9 +134,18 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.isLoading = false
-        if (action.payload.items) {
-          state.items = action.payload.items
-          state.total = action.payload.total
+        if (Array.isArray(action.payload)) {
+          state.items = normalizeItems(action.payload)
+          state.total = calculateTotal(state.items)
+        } else if (action.payload?.productId || action.payload?.id) {
+          const updatedItem = normalizeCartItem(action.payload)
+          const existingIndex = state.items.findIndex((item) => item.id === updatedItem.id)
+          if (existingIndex !== -1) {
+            state.items[existingIndex] = updatedItem
+          } else {
+            state.items.push(updatedItem)
+          }
+          state.total = calculateTotal(state.items)
         }
       })
       .addCase(updateCartItem.rejected, (state, action) => {
@@ -127,8 +159,7 @@ const cartSlice = createSlice({
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.isLoading = false
         state.items = state.items.filter(item => item.id !== action.payload)
-        // Recalculate total
-        state.total = state.items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+        state.total = calculateTotal(state.items)
       })
       .addCase(removeFromCart.rejected, (state, action) => {
         state.isLoading = false

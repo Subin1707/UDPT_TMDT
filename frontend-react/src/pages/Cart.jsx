@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { fetchCart, updateCartItem, removeFromCart, clearCart } from '../features/cartSlice'
+import { formatCurrencyVND } from '../utils/currency'
 
 const Cart = () => {
   const dispatch = useDispatch()
@@ -131,7 +132,7 @@ const Cart = () => {
                       <h3 className="text-lg font-medium text-gray-900">
                         {item.product?.name}
                       </h3>
-                      <p className="text-gray-600">${item.price?.toFixed(2)} each</p>
+                      <p className="text-gray-600">{formatCurrencyVND(item.price)} each</p>
                     </div>
 
                     <div className="flex items-center space-x-4">
@@ -155,7 +156,7 @@ const Cart = () => {
 
                       <div className="text-right">
                         <p className="text-lg font-semibold text-gray-900">
-                          ${(item.price * item.quantity)?.toFixed(2)}
+                          {formatCurrencyVND(item.price * item.quantity)}
                         </p>
                       </div>
 
@@ -182,7 +183,7 @@ const Cart = () => {
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900">${total?.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatCurrencyVND(total)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
@@ -190,12 +191,12 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span className="text-gray-900">${(total * 0.1)?.toFixed(2)}</span>
+                  <span className="text-gray-900">{formatCurrencyVND(total * 0.1)}</span>
                 </div>
                 <div className="border-t border-gray-200 pt-3">
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span>${(total * 1.1)?.toFixed(2)}</span>
+                    <span>{formatCurrencyVND(total * 1.1)}</span>
                   </div>
                 </div>
               </div>

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { fetchOrders } from '../features/orderSlice'
+import { formatCurrencyVND } from '../utils/currency'
 
 const Orders = () => {
   const dispatch = useDispatch()
@@ -106,7 +107,7 @@ const Orders = () => {
                     {order.status}
                   </span>
                   <p className="text-lg font-semibold text-gray-900 mt-2">
-                    ${order.total?.toFixed(2)}
+                    {formatCurrencyVND(order.total)}
                   </p>
                 </div>
               </div>
@@ -136,7 +137,7 @@ const Orders = () => {
                         </div>
                       </div>
                       <p className="font-medium text-gray-900">
-                        ${(item.price * item.quantity)?.toFixed(2)}
+                        {formatCurrencyVND(item.price * item.quantity)}
                       </p>
                     </div>
                   ))}
