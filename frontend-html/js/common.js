@@ -23,7 +23,11 @@ function showError(element, message) {
 
 // Format tiền
 function formatCurrency(amount) {
-  return '$' + parseFloat(amount).toFixed(2)
+  const value = Number(amount) || 0
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value)
 }
 
 // Format ngày

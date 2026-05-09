@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchProductById, clearSelectedProduct } from '../features/productSlice'
 import { addToCart } from '../features/cartSlice'
+import { formatCurrencyVND } from '../utils/currency'
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -28,8 +29,7 @@ const ProductDetail = () => {
     }
     dispatch(addToCart({
       productId: selectedProduct.id,
-      quantity: quantity,
-      price: selectedProduct.price
+      quantity,
     }))
   }
 
@@ -111,7 +111,7 @@ const ProductDetail = () => {
             </div>
 
             <div className="text-4xl font-bold text-green-600">
-              ${selectedProduct.price?.toFixed(2)}
+              {formatCurrencyVND(selectedProduct.price)}
             </div>
 
             <div className="flex items-center space-x-4">
@@ -168,7 +168,7 @@ const ProductDetail = () => {
                   onClick={handleAddToCart}
                   className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 font-medium text-lg"
                 >
-                  Add to Cart - ${(selectedProduct.price * quantity)?.toFixed(2)}
+                  Add to Cart - {formatCurrencyVND(selectedProduct.price * quantity)}
                 </button>
               </div>
             )}

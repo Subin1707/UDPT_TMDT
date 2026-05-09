@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { addToCart } from '../features/cartSlice'
+import { formatCurrencyVND } from '../utils/currency'
 
 const ProductCard = ({ product }) => {
   const dispatch = useDispatch()
@@ -10,7 +11,6 @@ const ProductCard = ({ product }) => {
     dispatch(addToCart({
       productId: product.id,
       quantity: 1,
-      price: product.price
     }))
   }
 
@@ -48,7 +48,7 @@ const ProductCard = ({ product }) => {
 
         <div className="flex justify-between items-center mb-3">
           <span className="text-xl font-bold text-green-600">
-            ${product.price?.toFixed(2)}
+            {formatCurrencyVND(product.price)}
           </span>
           {product.stock > 0 ? (
             <span className="text-sm text-green-600">In Stock ({product.stock})</span>

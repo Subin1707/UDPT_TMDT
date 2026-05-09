@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { fetchCart } from '../features/cartSlice'
 import { createOrder } from '../features/orderSlice'
+import { formatCurrencyVND } from '../utils/currency'
 
 const Checkout = () => {
   const dispatch = useDispatch()
@@ -230,7 +231,7 @@ const Checkout = () => {
                     </div>
                   </div>
                   <p className="font-medium text-gray-900">
-                    ${(item.price * item.quantity)?.toFixed(2)}
+                    {formatCurrencyVND(item.price * item.quantity)}
                   </p>
                 </div>
               ))}
@@ -239,20 +240,20 @@ const Checkout = () => {
             <div className="border-t border-gray-200 pt-4 space-y-2">
               <div className="flex justify-between">
                 <span className="text-gray-600">Subtotal</span>
-                <span className="text-gray-900">${total?.toFixed(2)}</span>
+                <span className="text-gray-900">{formatCurrencyVND(total)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Tax</span>
-                <span className="text-gray-900">${tax?.toFixed(2)}</span>
+                <span className="text-gray-900">{formatCurrencyVND(tax)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600">Shipping</span>
-                <span className="text-gray-900">${shipping?.toFixed(2)}</span>
+                <span className="text-gray-900">{formatCurrencyVND(shipping)}</span>
               </div>
               <div className="border-t border-gray-200 pt-2">
                 <div className="flex justify-between text-lg font-semibold">
                   <span>Total</span>
-                  <span>${finalTotal?.toFixed(2)}</span>
+                  <span>{formatCurrencyVND(finalTotal)}</span>
                 </div>
               </div>
             </div>
@@ -263,7 +264,7 @@ const Checkout = () => {
             disabled={orderLoading}
             className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 font-medium text-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {orderLoading ? 'Processing Order...' : `Place Order - $${finalTotal?.toFixed(2)}`}
+            {orderLoading ? 'Processing Order...' : `Place Order - ${formatCurrencyVND(finalTotal)}`}
           </button>
         </div>
       </form>
