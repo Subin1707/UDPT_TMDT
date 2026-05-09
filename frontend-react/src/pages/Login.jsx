@@ -3,6 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { login, clearError } from '../features/authSlice'
 
+const DEMO_ACCOUNTS = [
+  { email: 'admin@ecommerce.com', password: 'Admin@123', role: 'Admin' },
+  { email: 'staff@ecommerce.com', password: 'Staff@123', role: 'Staff' },
+  { email: 'customer@example.com', password: 'Customer@123', role: 'Customer' },
+]
+
 const Login = () => {
   const [formData, setFormData] = useState({
     email: '',
@@ -27,6 +33,13 @@ const Login = () => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+    })
+  }
+
+  const handleLoginWithDemo = (demoAccount) => {
+    setFormData({
+      email: demoAccount.email,
+      password: demoAccount.password,
     })
   }
 
@@ -95,6 +108,25 @@ const Login = () => {
               Register here
             </Link>
           </p>
+        </div>
+
+        {/* Demo Accounts Section */}
+        <div className="mt-8 pt-6 border-t border-gray-200">
+          <p className="text-sm font-semibold text-gray-700 mb-3">Demo Accounts:</p>
+          <div className="space-y-2">
+            {DEMO_ACCOUNTS.map((account, index) => (
+              <button
+                key={index}
+                type="button"
+                onClick={() => handleLoginWithDemo(account)}
+                className="w-full text-left px-3 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded transition-colors"
+              >
+                <div className="font-medium text-gray-900">{account.role}</div>
+                <div className="text-gray-600 text-xs">{account.email}</div>
+              </button>
+            ))}
+          </div>
+          <p className="text-xs text-gray-500 mt-3">Click any account to fill in credentials</p>
         </div>
       </div>
     </div>

@@ -47,6 +47,7 @@ api.interceptors.response.use(
 
     if (
       response.data &&
+      typeof response.data === 'object' &&
       Object.prototype.hasOwnProperty.call(
         response.data,
         'data'
@@ -60,9 +61,14 @@ api.interceptors.response.use(
   (error) => {
 
     console.error(
-      'API ERROR:',
+      'API ERROR - Status:',
       error.response?.status,
-      error.response?.data
+      'URL:',
+      error.config?.url,
+      'Data:',
+      error.response?.data,
+      'Error:',
+      error.message
     )
 
     if (error.response?.status === 401) {
