@@ -44,7 +44,7 @@ Dung PowerShell tai thu muc root:
 Dung Bash tai thu muc root:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -DskipTests install
 ```
 
@@ -86,56 +86,63 @@ Cart service luu du lieu vao H2 file database tai `services/cart-service/data/ca
 Truoc tien, chay lenh install:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -DskipTests install
 ```
 
 Chay API Gateway tren `http://localhost:8080`:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/api-gateway spring-boot:run
 ```
 
-Mo them terminal khac de chay service can dung:
+Mo them terminal khac de chay service can dung. Neu service phu thuoc `shared-lib`, chay keo theo module phu thuoc voi `-am` de build thiet yeu:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
-./mvnw -pl services/auth-service spring-boot:run
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
+./mvnw -pl services/auth-service -am spring-boot:run
+```
+
+Hoac ban co the build `shared-lib` truoc:
+
+```bash
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
+./mvnw -pl shared-lib install
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/product-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/cart-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/order-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/payment-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/notification-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/delivery-service spring-boot:run
 ```
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/delivery-service spring-boot:run
 ```
 
@@ -210,14 +217,14 @@ Vi du de man hinh React lay san pham tu backend:
 1. Terminal 1:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/api-gateway spring-boot:run
 ```
 
 2. Terminal 2:
 
 ```bash
-export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ./mvnw -pl services/product-service spring-boot:run
 ```
 

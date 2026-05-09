@@ -8,8 +8,8 @@ import java.util.List;
 
 public class AuthSeeder {
     private static final List<LoginRequest> DEMO_ACCOUNTS = List.of(
-            new LoginRequest("admin@commerco.com", "Admin@123"),
-            new LoginRequest("staff@commerco.com", "Staff@123"),
+            new LoginRequest("admin@ecommerce.com", "Admin@123"),
+            new LoginRequest("staff@ecommerce.com", "Staff@123"),
             new LoginRequest("customer@example.com", "Customer@123")
     );
 

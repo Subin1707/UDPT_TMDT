@@ -6,7 +6,9 @@ export const login = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await authAPI.login(credentials)
-      const { token, user } = response.data
+      const { accessToken, email, role } = response.data
+      const token = accessToken
+      const user = { email, role }
       localStorage.setItem('token', token)
       return { token, user }
     } catch (error) {
@@ -20,7 +22,9 @@ export const register = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await authAPI.register(userData)
-      const { token, user } = response.data
+      const { accessToken, email, role } = response.data
+      const token = accessToken
+      const user = { email, role }
       localStorage.setItem('token', token)
       return { token, user }
     } catch (error) {
