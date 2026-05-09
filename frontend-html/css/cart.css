@@ -1,0 +1,135 @@
+/* ========== CART PAGE ========== */
+.empty-cart {
+  text-align: center;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  color: #64748b;
+}
+
+.cart-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.cart-items {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 1.5rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 100px 1fr auto;
+  gap: 1.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  align-items: center;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.item-details h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+}
+
+.item-details p {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.item-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #f8fafc;
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem;
+}
+
+.qty-control button {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.btn-remove {
+  padding: 0.5rem 0.75rem;
+  background: #fee2e2;
+  color: #b91c1c;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.cart-summary {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 28px;
+  padding: 1.5rem;
+  height: fit-content;
+}
+
+.cart-summary h2 {
+  margin-top: 0;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+  color: #475569;
+}
+
+.summary-row.total {
+  border: none;
+  padding: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.cart-summary .btn {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .cart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cart-item {
+    grid-template-columns: 80px 1fr;
+  }
+
+  .cart-item img {
+    height: 80px;
+  }
+}

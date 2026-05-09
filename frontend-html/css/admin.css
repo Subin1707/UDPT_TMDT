@@ -1,0 +1,89 @@
+/* ========== ADMIN DASHBOARD ========== */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.06);
+}
+
+.dashboard-card h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.card-number {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #2563eb;
+  margin: 0.5rem 0;
+}
+
+.card-label {
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.recent-section {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 1.5rem;
+}
+
+.recent-section h2 {
+  margin-top: 0;
+}
+
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.recent-item {
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.item-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.order-id {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.item-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 900px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}

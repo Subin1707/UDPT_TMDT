@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thanh toán - E-Commerce</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/checkout.css">
+</head>
+<body>
+  <header>
+    <div class="header-inner">
+      <a href="/" class="brand">E-Commerce</a>
+      <nav><div class="auth-nav"></div></nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h1>Thanh toán đơn hàng</h1>
+      <div class="checkout-grid">
+        <form id="checkout-form" class="checkout-form">
+          <h2>Thông tin giao hàng</h2>
+          
+          <div class="form-group">
+            <label for="fullName">Họ và tên</label>
+            <input type="text" id="fullName" name="fullName" required>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input type="tel" id="phone" name="phone" required>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Địa chỉ</label>
+            <textarea id="address" name="address" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="payment">Phương thức thanh toán</label>
+            <select id="payment" name="payment" required>
+              <option value="COD">Thanh toán khi nhận hàng (COD)</option>
+              <option value="BANK">Chuyển khoản ngân hàng</option>
+              <option value="CARD">Thẻ tín dụng</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="note">Ghi chú đơn hàng (tùy chọn)</label>
+            <textarea id="note" name="note"></textarea>
+          </div>
+
+          <div id="error-msg" class="error-message" style="display: none;"></div>
+
+          <button type="submit" class="btn">Đặt hàng</button>
+        </form>
+
+        <div class="checkout-summary">
+          <h2>Tóm tắt đơn hàng</h2>
+          <div id="order-items"></div>
+          <div class="summary-total">
+            <span>Tổng cộng:</span>
+            <strong id="total-price">$0.00</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/common.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/cart.js"></script>
+  <script src="/js/checkout.js"></script>
+</body>
+</html>
