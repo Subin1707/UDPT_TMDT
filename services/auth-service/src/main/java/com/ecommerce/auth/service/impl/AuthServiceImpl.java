@@ -29,13 +29,22 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public JwtResponse register(RegisterRequest request) {
         UserRole role = request.role() == null ? UserRole.USER : request.role();
-        return new JwtResponse(jwtProvider.generateToken(request.email(), role), "Bearer", request.email(), role);
+        Long userId = generateUserIdFromEmail(request.email());
+        return new JwtResponse(jwtProvider.generateToken(request.email(), role), "Bearer", request.email(), role, userId);
     }
 
     @Override
     public JwtResponse login(LoginRequest request) {
         UserRole role = resolveRoleForDemoAccount(request.email(), request.password());
-        return new JwtResponse(jwtProvider.generateToken(request.email(), role), "Bearer", request.email(), role);
+        Long userId = generateUserIdFromEmail(request.email());
+        return new JwtResponse(jwtProvider.generateToken(request.email(), role), "Bearer", request.email(), role, userId);
+    }
+
+    private Long generateUserIdFromEmail(String email) {
+        if (email == null) return 2L; // default to customer
+        if (email.toLowerCase().contains("admin")) return 1L;
+        if (email.toLowerCase().contains("staff")) return 3L;
+        return 2L; // default to customer
     }
 
     private UserRole resolveRoleForDemoAccount(String email, String password) {

@@ -23,6 +23,7 @@ class Auth {
       const data = await authAPI.login(email, password)
       this.user = data.user
       this.token = data.token
+      localStorage.setItem('user', JSON.stringify(data.user))
       this.updateUI()
       return data
     } catch (error) {
@@ -36,6 +37,7 @@ class Auth {
       const data = await authAPI.register(fullName, email, phone, password)
       this.user = data.user
       this.token = data.token
+      localStorage.setItem('user', JSON.stringify(data.user))
       this.updateUI()
       return data
     } catch (error) {
