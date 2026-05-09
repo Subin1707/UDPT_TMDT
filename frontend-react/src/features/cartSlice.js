@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { cartAPI } from '../services/api'
 
 const normalizeCartItem = (item) => ({
-  id: item.productId || item.id,
+  productId: item.productId,
   name: item.name || item.product?.name || 'Product',
   quantity: item.quantity || 0,
   price: item.unitPrice ?? item.price ?? item.product?.price ?? 0,
@@ -113,9 +113,9 @@ const cartSlice = createSlice({
         if (Array.isArray(action.payload)) {
           state.items = normalizeItems(action.payload)
           state.total = calculateTotal(state.items)
-        } else if (action.payload?.productId || action.payload?.id) {
+        } else if (action.payload?.productId) {
           const newItem = normalizeCartItem(action.payload)
-          const existingIndex = state.items.findIndex((item) => item.id === newItem.id)
+          const existingIndex = state.items.findIndex((item) => item.productId === newItem.productId)
           if (existingIndex !== -1) {
             state.items[existingIndex] = newItem
           } else {
@@ -137,9 +137,9 @@ const cartSlice = createSlice({
         if (Array.isArray(action.payload)) {
           state.items = normalizeItems(action.payload)
           state.total = calculateTotal(state.items)
-        } else if (action.payload?.productId || action.payload?.id) {
+        } else if (action.payload?.productId) {
           const updatedItem = normalizeCartItem(action.payload)
-          const existingIndex = state.items.findIndex((item) => item.id === updatedItem.id)
+          const existingIndex = state.items.findIndex((item) => item.productId === updatedItem.productId)
           if (existingIndex !== -1) {
             state.items[existingIndex] = updatedItem
           } else {
@@ -158,7 +158,7 @@ const cartSlice = createSlice({
       })
       .addCase(removeFromCart.fulfilled, (state, action) => {
         state.isLoading = false
-        state.items = state.items.filter(item => item.id !== action.payload)
+        state.items = state.items.filter(item => item.productId !== action.payload)
         state.total = calculateTotal(state.items)
       })
       .addCase(removeFromCart.rejected, (state, action) => {
