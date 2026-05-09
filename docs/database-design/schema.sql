@@ -1,9 +1,11 @@
 -- =========================================================
 -- E-COMMERCE DISTRIBUTED SYSTEM DATABASE
 -- MYSQL 8+
+-- FIXED VERSION
 -- =========================================================
 
-CREATE DATABASE IF NOT EXISTS defaultdb;
+DROP DATABASE IF EXISTS defaultdb;
+CREATE DATABASE defaultdb;
 USE defaultdb;
 
 -- =========================================================
@@ -17,9 +19,13 @@ CREATE TABLE roles (
 
 CREATE TABLE users (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
+
     full_name VARCHAR(255) NOT NULL,
+
     email VARCHAR(255) UNIQUE NOT NULL,
+
     phone VARCHAR(20) UNIQUE,
+
     password_hash VARCHAR(255) NOT NULL,
 
     avatar_url TEXT,
@@ -31,6 +37,7 @@ CREATE TABLE users (
     ) DEFAULT 'ACTIVE',
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         ON UPDATE CURRENT_TIMESTAMP
 );
@@ -79,10 +86,13 @@ CREATE TABLE user_addresses (
     user_id BIGINT NOT NULL,
 
     receiver_name VARCHAR(255) NOT NULL,
+
     phone VARCHAR(20) NOT NULL,
 
     province VARCHAR(100),
+
     district VARCHAR(100),
+
     ward VARCHAR(100),
 
     address_detail TEXT,
@@ -126,10 +136,11 @@ CREATE TABLE categories (
 
     name VARCHAR(255) NOT NULL,
 
-    parent_id BIGINT,
+    parent_id BIGINT NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-CONSTRAINT fk_categories_parent
+
+    CONSTRAINT fk_categories_parent
         FOREIGN KEY(parent_id)
         REFERENCES categories(id)
         ON DELETE SET NULL
@@ -138,8 +149,9 @@ CONSTRAINT fk_categories_parent
 CREATE TABLE products (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
 
-    category_id BIGINT,
-    brand_id BIGINT,
+    category_id BIGINT NULL,
+
+    brand_id BIGINT NULL,
 
     name VARCHAR(255) NOT NULL,
 
@@ -153,7 +165,7 @@ CREATE TABLE products (
 
     thumbnail_url TEXT,
 
-    average_rating DECIMAL(2,1) DEFAULT 0,
+    average_rating DECIMAL(3,2) DEFAULT 0,
 
     sold_count INT DEFAULT 0,
 
@@ -221,7 +233,7 @@ CREATE TABLE product_reviews (
 
     user_id BIGINT NOT NULL,
 
-    rating INT NOT NULL,
+    rating INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
 
     comment TEXT,
 
@@ -230,6 +242,11 @@ CREATE TABLE product_reviews (
     CONSTRAINT fk_reviews_product
         FOREIGN KEY(product_id)
         REFERENCES products(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_reviews_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
         ON DELETE CASCADE
 );
 
@@ -242,7 +259,12 @@ CREATE TABLE carts (
 
     user_id BIGINT NOT NULL UNIQUE,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_carts_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE cart_items (
@@ -259,6 +281,11 @@ CREATE TABLE cart_items (
     CONSTRAINT fk_cart_items_cart
         FOREIGN KEY(cart_id)
         REFERENCES carts(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_cart_items_product
+        FOREIGN KEY(product_id)
+        REFERENCES products(id)
         ON DELETE CASCADE
 );
 
@@ -268,9 +295,10 @@ CREATE TABLE cart_items (
 
 CREATE TABLE orders (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-user_id BIGINT NOT NULL,
 
-    shipping_address_id BIGINT,
+    user_id BIGINT NOT NULL,
+
+    shipping_address_id BIGINT NULL,
 
     order_code VARCHAR(100) UNIQUE,
 
@@ -304,7 +332,17 @@ user_id BIGINT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-        ON UPDATE CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_orders_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_orders_address
+        FOREIGN KEY(shipping_address_id)
+        REFERENCES user_addresses(id)
+        ON DELETE SET NULL
 );
 
 CREATE TABLE order_items (
@@ -327,6 +365,11 @@ CREATE TABLE order_items (
     CONSTRAINT fk_order_items_order
         FOREIGN KEY(order_id)
         REFERENCES orders(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT fk_order_items_product
+        FOREIGN KEY(product_id)
+        REFERENCES products(id)
         ON DELETE CASCADE
 );
 
@@ -378,7 +421,12 @@ CREATE TABLE payments (
 
     paid_at TIMESTAMP NULL,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_payments_order
+        FOREIGN KEY(order_id)
+        REFERENCES orders(id)
+        ON DELETE CASCADE
 );
 
 CREATE TABLE payment_transactions (
@@ -420,7 +468,8 @@ CREATE TABLE shippers (
         'OFFLINE',
         'BUSY'
     ) DEFAULT 'OFFLINE',
-created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE deliveries (
@@ -428,7 +477,7 @@ CREATE TABLE deliveries (
 
     order_id BIGINT NOT NULL,
 
-    shipper_id BIGINT,
+    shipper_id BIGINT NULL,
 
     status ENUM(
         'PENDING',
@@ -443,6 +492,11 @@ CREATE TABLE deliveries (
     delivered_at TIMESTAMP NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_deliveries_order
+        FOREIGN KEY(order_id)
+        REFERENCES orders(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_deliveries_shipper
         FOREIGN KEY(shipper_id)
@@ -486,7 +540,12 @@ CREATE TABLE notifications (
 
     is_read BOOLEAN DEFAULT FALSE,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_notifications_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE
 );
 
 -- =========================================================
@@ -510,7 +569,7 @@ CREATE TABLE vouchers (
 
     used_count INT DEFAULT 0,
 
-    expired_at TIMESTAMP,
+    expired_at TIMESTAMP NULL,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -525,6 +584,11 @@ CREATE TABLE user_vouchers (
     is_used BOOLEAN DEFAULT FALSE,
 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_user_vouchers_user
+        FOREIGN KEY(user_id)
+        REFERENCES users(id)
+        ON DELETE CASCADE,
 
     CONSTRAINT fk_user_vouchers_voucher
         FOREIGN KEY(voucher_id)
