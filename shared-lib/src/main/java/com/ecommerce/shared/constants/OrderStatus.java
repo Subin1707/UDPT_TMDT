@@ -1,11 +1,11 @@
 package com.ecommerce.shared.constants;
 
 public enum OrderStatus {
-    CREATED,
-    PAYMENT_PENDING,
-    PAID,
+    PENDING,
+    CONFIRMED,
     PACKING,
     SHIPPING,
-    COMPLETED,
-    CANCELLED
+    DELIVERED,
+    CANCELLED,
+    REFUNDED
 }

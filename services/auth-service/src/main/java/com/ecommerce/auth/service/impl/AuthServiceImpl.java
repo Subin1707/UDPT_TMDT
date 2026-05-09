@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public JwtResponse register(RegisterRequest request) {
-        UserRole role = request.role() == null ? UserRole.USER : request.role();
+        UserRole role = request.role() == null ? UserRole.CUSTOMER : request.role();
         Long userId = generateUserIdFromEmail(request.email());
         return new JwtResponse(jwtProvider.generateToken(request.email(), role), "Bearer", request.email(), role, userId);
     }
@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 
     private UserRole resolveRoleForDemoAccount(String email, String password) {
         if (email == null) {
-            return UserRole.USER;
+            return UserRole.CUSTOMER;
         }
         if (email.equalsIgnoreCase(defaultAdminEmail) && password != null && password.equals(defaultAdminPassword)) {
             return UserRole.ADMIN;
@@ -57,9 +57,9 @@ public class AuthServiceImpl implements AuthService {
         if (email.startsWith("admin@")) {
             return UserRole.ADMIN;
         }
-        if (email.startsWith("staff@")) {
-            return UserRole.STAFF;
+        if (email.startsWith("shipper@")) {
+            return UserRole.SHIPPER;
         }
-        return UserRole.USER;
+        return UserRole.CUSTOMER;
     }
 }

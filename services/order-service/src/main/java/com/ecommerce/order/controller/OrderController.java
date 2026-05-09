@@ -31,7 +31,7 @@ public class OrderController {
     @PostMapping
     public ApiResponse<Order> create(@RequestBody CreateOrderRequest request) {
         Long userId = request.userId() == null ? 2L : request.userId();
-        Order order = new Order(System.currentTimeMillis(), userId, OrderStatus.CREATED, Instant.now());
+        Order order = new Order(System.currentTimeMillis(), userId, OrderStatus.PENDING, Instant.now());
         OrderSeeder.add(order);
         return ApiResponse.ok("Order created", order);
     }

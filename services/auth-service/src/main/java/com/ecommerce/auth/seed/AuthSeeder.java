@@ -18,6 +18,6 @@ public class AuthSeeder {
     }
 
     public static RegisterRequest defaultUser() {
-        return new RegisterRequest("Demo User", "customer@example.com", "Customer@123", UserRole.USER);
+        return new RegisterRequest("Demo User", "customer@example.com", "Customer@123", UserRole.CUSTOMER);
     }
 }

@@ -23,7 +23,7 @@ public class PaymentController {
 
     @PostMapping
     public ApiResponse<Payment> pay(@RequestBody PaymentRequest request) {
-        Payment payment = new Payment(System.currentTimeMillis(), request.orderId(), request.amount(), PaymentStatus.SUCCESS);
+        Payment payment = new Payment(System.currentTimeMillis(), request.orderId(), request.amount(), PaymentStatus.COMPLETED);
         return ApiResponse.ok("Payment simulated", payment);
     }
 }
