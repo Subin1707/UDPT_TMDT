@@ -8,16 +8,18 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "cart_items")
 public class CartItemEntity {
+
     @Id
+    @Column(name = "product_id")
     private Long productId;
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false)
+    @Column(name = "unit_price", nullable = false)
     private Integer unitPrice;
 
     protected CartItemEntity() {
