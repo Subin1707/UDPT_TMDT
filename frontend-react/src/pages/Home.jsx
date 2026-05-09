@@ -6,8 +6,11 @@ import ProductCard from '../components/ProductCard'
 
 const Home = () => {
   const dispatch = useDispatch()
-  const { items: products, isLoading, error } = useSelector(state => state.products)
+const { items = [], isLoading, error } = useSelector(
+  state => state.products || {}
+)
 
+const products = Array.isArray(items) ? items : []
   useEffect(() => {
     dispatch(fetchProducts({ page: 0, size: 8 }))
   }, [dispatch])
