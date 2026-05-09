@@ -88,36 +88,47 @@ public class CartService {
     // =========================================================
     // UPDATE QUANTITY
     // =========================================================
-    @Transactional
-    public CartItem updateQuantity(
-            Long productId,
-            Integer quantity
-    ) {
+@Transactional
+public CartItem updateQuantity(
+        Long productId,
+        Integer quantity
+) {
 
-        CartItemEntity entity = cartItemRepository
-                .findById(productId)
-                .orElseThrow(() ->
-                        new RuntimeException("Cart item not found")
-                );
+    CartItemEntity entity = cartItemRepository
+            .findById(productId)
+            .orElseThrow(() ->
+                    new RuntimeException("Cart item not found")
+            );
 
-        // REMOVE ITEM IF QUANTITY <= 0
-        if (quantity == null || quantity <= 0) {
+    // =========================================================
+    // REMOVE ITEM IF QUANTITY <= 0
+    // =========================================================
+    if (quantity == null || quantity <= 0) {
 
-            cartItemRepository.delete(entity);
+        CartItem removedItem = new CartItem(
+                entity.getProductId(),
+                entity.getName(),
+                0,
+                entity.getUnitPrice()
+        );
 
-            return null;
-        }
+        cartItemRepository.delete(entity);
 
-        syncProductInfo(entity);
-
-        entity.setQuantity(quantity);
-
-        CartItemEntity saved =
-                cartItemRepository.save(entity);
-
-        return toResponse(saved);
+        return removedItem;
     }
 
+    // =========================================================
+    // UPDATE ITEM
+    // =========================================================
+    syncProductInfo(entity);
+
+    entity.setQuantity(quantity);
+
+    CartItemEntity saved =
+            cartItemRepository.save(entity);
+
+    return toResponse(saved);
+}
     // =========================================================
     // REMOVE SINGLE ITEM
     // =========================================================
@@ -134,9 +145,11 @@ public class CartService {
     // CLEAR CART
     // =========================================================
     @Transactional
-    public void clearCart() {
+    public List<CartItem> clearCart() {
 
         cartItemRepository.deleteAll();
+
+        return List.of();
     }
 
     // =========================================================
@@ -228,4 +241,3 @@ public class CartService {
         );
     }
 }
-
