@@ -76,25 +76,25 @@ const authAPI = {
 // Giỏ hàng
 const cartAPI = {
   getCart: async () => {
-    return apiCall('/cart')
+    return apiCall('/cart/items')
   },
 
   addToCart: async (productId, quantity) => {
-    return apiCall('/cart/add', {
+    return apiCall('/cart/items', {
       method: 'POST',
       body: JSON.stringify({ productId, quantity }),
     })
   },
 
   updateCart: async (productId, quantity) => {
-    return apiCall('/cart/update', {
+    return apiCall(`/cart/items/${productId}`, {
       method: 'PUT',
-      body: JSON.stringify({ productId, quantity }),
+      body: JSON.stringify({ quantity }),
     })
   },
 
   removeFromCart: async (productId) => {
-    return apiCall(`/cart/remove/${productId}`, { method: 'DELETE' })
+    return apiCall(`/cart/items/${productId}`, { method: 'DELETE' })
   },
 }
 
