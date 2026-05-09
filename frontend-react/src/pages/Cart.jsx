@@ -113,8 +113,7 @@ const Cart = () => {
 
               <div className="divide-y divide-gray-200">
                 {items.map((item) => (
-                  <div key={item.id} className="p-6 flex items-center">
-                    <div className="flex-shrink-0 w-20 h-20 bg-gray-200 rounded-md flex items-center justify-center mr-4">
+<div key={item.productId} className="p-6 flex items-center">                    <div className="flex-shrink-0 w-20 h-20 bg-gray-200 rounded-md flex items-center justify-center mr-4">
                       {item.product?.imageUrl ? (
                         <img
                           src={item.product.imageUrl}
@@ -138,7 +137,7 @@ const Cart = () => {
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center border border-gray-300 rounded-md">
                         <button
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}
                           className="px-3 py-1 text-gray-600 hover:text-gray-800"
                         >
                           -
@@ -147,7 +146,7 @@ const Cart = () => {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)}
                           className="px-3 py-1 text-gray-600 hover:text-gray-800"
                         >
                           +
@@ -161,7 +160,7 @@ const Cart = () => {
                       </div>
 
                       <button
-                        onClick={() => handleRemoveItem(item.id)}
+                        onClick={() => handleRemoveItem(item.productId)}
                         className="text-red-600 hover:text-red-800"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
