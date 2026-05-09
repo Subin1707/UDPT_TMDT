@@ -14,6 +14,9 @@ import java.util.Map;
 @Service
 public class CartService {
 
+    // =========================================================
+    // MOCK PRODUCT CATALOG
+    // =========================================================
     private static final Map<Long, CartItem> PRODUCT_CATALOG = Map.of(
             1L, new CartItem(1L, "Wireless Keyboard", 0, 390000),
             2L, new CartItem(2L, "USB-C Hub", 0, 550000),
@@ -31,6 +34,9 @@ public class CartService {
         this.cartItemRepository = cartItemRepository;
     }
 
+    // =========================================================
+    // GET ALL ITEMS
+    // =========================================================
     @Transactional
     public List<CartItem> getItems() {
 
@@ -43,6 +49,9 @@ public class CartService {
                 .toList();
     }
 
+    // =========================================================
+    // ADD ITEM
+    // =========================================================
     @Transactional
     public CartItem addItem(CartItemRequest request) {
 
@@ -50,30 +59,48 @@ public class CartService {
             throw new RuntimeException("Product ID is required");
         }
 
-        int quantity = request.quantity() == null ? 1 : request.quantity();
+        int quantity = request.quantity() == null
+                ? 1
+                : request.quantity();
 
         if (quantity <= 0) {
             quantity = 1;
         }
 
-        CartItemEntity entity = cartItemRepository.findById(request.productId())
-                .orElseGet(() -> createEntity(request.productId(), 0));
+        CartItemEntity entity = cartItemRepository
+                .findById(request.productId())
+                .orElseGet(() ->
+                        createEntity(request.productId(), 0)
+                );
 
         syncProductInfo(entity);
 
-        entity.setQuantity(entity.getQuantity() + quantity);
+        entity.setQuantity(
+                entity.getQuantity() + quantity
+        );
 
-        CartItemEntity saved = cartItemRepository.save(entity);
+        CartItemEntity saved =
+                cartItemRepository.save(entity);
 
         return toResponse(saved);
     }
 
+    // =========================================================
+    // UPDATE QUANTITY
+    // =========================================================
     @Transactional
-    public CartItem updateQuantity(Long productId, Integer quantity) {
+    public CartItem updateQuantity(
+            Long productId,
+            Integer quantity
+    ) {
 
-        CartItemEntity entity = cartItemRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Cart item not found"));
+        CartItemEntity entity = cartItemRepository
+                .findById(productId)
+                .orElseThrow(() ->
+                        new RuntimeException("Cart item not found")
+                );
 
+        // REMOVE ITEM IF QUANTITY <= 0
         if (quantity == null || quantity <= 0) {
 
             cartItemRepository.delete(entity);
@@ -85,11 +112,15 @@ public class CartService {
 
         entity.setQuantity(quantity);
 
-        CartItemEntity saved = cartItemRepository.save(entity);
+        CartItemEntity saved =
+                cartItemRepository.save(entity);
 
         return toResponse(saved);
     }
 
+    // =========================================================
+    // REMOVE SINGLE ITEM
+    // =========================================================
     @Transactional
     public List<CartItem> removeItem(Long productId) {
 
@@ -99,11 +130,29 @@ public class CartService {
         return getItems();
     }
 
-    private CartItemEntity createEntity(Long productId, int quantity) {
+    // =========================================================
+    // CLEAR CART
+    // =========================================================
+    @Transactional
+    public void clearCart() {
 
-        CartItem product = PRODUCT_CATALOG.get(productId);
+        cartItemRepository.deleteAll();
+    }
 
+    // =========================================================
+    // CREATE ENTITY
+    // =========================================================
+    private CartItemEntity createEntity(
+            Long productId,
+            int quantity
+    ) {
+
+        CartItem product =
+                PRODUCT_CATALOG.get(productId);
+
+        // FALLBACK PRODUCT
         if (product == null) {
+
             return new CartItemEntity(
                     productId,
                     "Product " + productId,
@@ -120,27 +169,43 @@ public class CartService {
         );
     }
 
-    private void syncProductInfo(CartItemEntity entity) {
+    // =========================================================
+    // SYNC PRODUCT INFO
+    // =========================================================
+    private void syncProductInfo(
+            CartItemEntity entity
+    ) {
 
-        CartItem product = PRODUCT_CATALOG.get(entity.getProductId());
+        CartItem product =
+                PRODUCT_CATALOG.get(entity.getProductId());
 
         if (product == null) {
             return;
         }
 
         entity.setName(product.name());
-        entity.setUnitPrice(product.unitPrice());
+
+        entity.setUnitPrice(
+                product.unitPrice()
+        );
     }
 
+    // =========================================================
+    // FIX INVALID DATA
+    // =========================================================
     private void syncExistingItems() {
 
-        List<CartItemEntity> items = cartItemRepository.findAll();
+        List<CartItemEntity> items =
+                cartItemRepository.findAll();
 
         for (CartItemEntity item : items) {
 
             syncProductInfo(item);
 
-            if (item.getQuantity() == null || item.getQuantity() <= 0) {
+            if (
+                    item.getQuantity() == null
+                            || item.getQuantity() <= 0
+            ) {
                 item.setQuantity(1);
             }
         }
@@ -148,7 +213,12 @@ public class CartService {
         cartItemRepository.saveAll(items);
     }
 
-    private CartItem toResponse(CartItemEntity entity) {
+    // =========================================================
+    // ENTITY -> RESPONSE DTO
+    // =========================================================
+    private CartItem toResponse(
+            CartItemEntity entity
+    ) {
 
         return new CartItem(
                 entity.getProductId(),
@@ -158,3 +228,4 @@ public class CartService {
         );
     }
 }
+
