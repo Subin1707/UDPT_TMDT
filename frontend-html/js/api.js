@@ -47,20 +47,38 @@ const productAPI = {
 // Xác thực
 const authAPI = {
   login: async (email, password) => {
-    const data = await apiCall('/auth/login', {
+    const response = await apiCall('/auth/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     })
+    const data = {
+      token: response.accessToken,
+      user: {
+        email: response.email,
+        role: response.role,
+        id: response.userId,
+        userId: response.userId,
+      },
+    }
     localStorage.setItem('authToken', data.token)
     localStorage.setItem('user', JSON.stringify(data.user))
     return data
   },
 
   register: async (fullName, email, phone, password) => {
-    const data = await apiCall('/auth/register', {
+    const response = await apiCall('/auth/register', {
       method: 'POST',
       body: JSON.stringify({ fullName, email, phone, password }),
     })
+    const data = {
+      token: response.accessToken,
+      user: {
+        email: response.email,
+        role: response.role,
+        id: response.userId,
+        userId: response.userId,
+      },
+    }
     localStorage.setItem('authToken', data.token)
     localStorage.setItem('user', JSON.stringify(data.user))
     return data

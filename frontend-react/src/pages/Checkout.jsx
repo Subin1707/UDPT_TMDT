@@ -41,13 +41,11 @@ const Checkout = () => {
     e.preventDefault()
 
     const orderData = {
+      userId: user.userId,
       items: items.map(item => ({
         productId: item.product.id,
         quantity: item.quantity,
-        price: item.price,
       })),
-      shippingAddress: shippingInfo,
-      paymentMethod,
     }
 
     try {

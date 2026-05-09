@@ -39,17 +39,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     try {
       const orderData = {
+        userId: auth.user.id || auth.user.userId || 2,
         items: cart.items.map(item => ({
           productId: item.id,
           quantity: item.quantity,
         })),
-        shippingAddress: {
-          fullName: document.getElementById('fullName').value,
-          phone: document.getElementById('phone').value,
-          address: document.getElementById('address').value,
-        },
-        paymentMethod: document.getElementById('payment').value,
-        note: document.getElementById('note').value,
       }
 
       const result = await orderAPI.createOrder(orderData)
