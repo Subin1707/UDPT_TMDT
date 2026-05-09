@@ -1,7 +1,7 @@
 -- =========================================================
 -- E-COMMERCE DISTRIBUTED SYSTEM DATABASE
 -- MYSQL 8+
--- FIXED VERSION
+-- FIXED FOR CURRENT SPRING BOOT CART SERVICE
 -- =========================================================
 
 DROP DATABASE IF EXISTS defaultdb;
@@ -252,41 +252,17 @@ CREATE TABLE product_reviews (
 
 -- =========================================================
 -- CART SERVICE
+-- FIXED TO MATCH YOUR SPRING ENTITY
 -- =========================================================
 
-CREATE TABLE carts (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-
-    user_id BIGINT NOT NULL UNIQUE,
-
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_carts_user
-        FOREIGN KEY(user_id)
-        REFERENCES users(id)
-        ON DELETE CASCADE
-);
-
 CREATE TABLE cart_items (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    product_id BIGINT PRIMARY KEY,
 
-    cart_id BIGINT NOT NULL,
-
-    product_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
 
     quantity INT NOT NULL DEFAULT 1,
 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT fk_cart_items_cart
-        FOREIGN KEY(cart_id)
-        REFERENCES carts(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_cart_items_product
-        FOREIGN KEY(product_id)
-        REFERENCES products(id)
-        ON DELETE CASCADE
+    unit_price INT NOT NULL
 );
 
 -- =========================================================
@@ -365,11 +341,6 @@ CREATE TABLE order_items (
     CONSTRAINT fk_order_items_order
         FOREIGN KEY(order_id)
         REFERENCES orders(id)
-        ON DELETE CASCADE,
-
-    CONSTRAINT fk_order_items_product
-        FOREIGN KEY(product_id)
-        REFERENCES products(id)
         ON DELETE CASCADE
 );
 
@@ -627,9 +598,6 @@ ON notifications(user_id);
 CREATE INDEX idx_reviews_product
 ON product_reviews(product_id);
 
-CREATE INDEX idx_cart_items_cart
-ON cart_items(cart_id);
-
 CREATE INDEX idx_delivery_tracking_delivery
 ON delivery_tracking(delivery_id);
 
@@ -642,6 +610,40 @@ VALUES
 ('ROLE_ADMIN'),
 ('ROLE_CUSTOMER'),
 ('ROLE_SHIPPER');
+
+-- =========================================================
+-- SAMPLE PRODUCTS
+-- =========================================================
+
+INSERT INTO brands(name)
+VALUES
+('Logitech'),
+('Samsung'),
+('Sony');
+
+INSERT INTO categories(name)
+VALUES
+('Electronics'),
+('Accessories');
+
+INSERT INTO products(
+    category_id,
+    brand_id,
+    name,
+    slug,
+    description,
+    price,
+    status
+)
+VALUES
+(2, 1, 'Wireless Keyboard', 'wireless-keyboard', 'Keyboard', 390000, 'ACTIVE'),
+(2, 1, 'USB-C Hub', 'usb-c-hub', 'Hub', 550000, 'ACTIVE'),
+(2, 1, 'Gaming Mouse', 'gaming-mouse', 'Mouse', 420000, 'ACTIVE'),
+(1, 3, 'Noise Cancelling Headset', 'noise-headset', 'Headset', 1190000, 'ACTIVE'),
+(1, 2, 'Smart LED Lamp', 'smart-led-lamp', 'Lamp', 690000, 'ACTIVE'),
+(1, 2, 'Portable SSD 1TB', 'portable-ssd-1tb', 'SSD', 1790000, 'ACTIVE'),
+(1, 1, 'Ergonomic Chair', 'ergonomic-chair', 'Chair', 2590000, 'ACTIVE'),
+(1, 2, '4K Monitor', '4k-monitor', 'Monitor', 6490000, 'ACTIVE');
 
 -- =========================================================
 -- END

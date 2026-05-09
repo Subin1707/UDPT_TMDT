@@ -4,14 +4,7 @@ import com.ecommerce.cart.dto.CartItemRequest;
 import com.ecommerce.cart.entity.CartItem;
 import com.ecommerce.cart.service.CartService;
 import com.ecommerce.shared.response.ApiResponse;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,8 +23,9 @@ public class CartController {
     // =========================================================
     @GetMapping("/items")
     public ApiResponse<List<CartItem>> getItems() {
+
         return ApiResponse.ok(
-                "Cart items",
+                "Cart items fetched successfully",
                 cartService.getItems()
         );
     }
@@ -40,32 +34,15 @@ public class CartController {
     // ADD ITEM TO CART
     // =========================================================
     @PostMapping("/items")
-    public ApiResponse<?> addItem(
+    public ApiResponse<CartItem> addItem(
             @RequestBody CartItemRequest request
     ) {
 
-        if ("UPDATE".equalsIgnoreCase(request.action())) {
-            return ApiResponse.ok(
-                    "Item quantity updated",
-                    cartService.updateQuantity(
-                            request.productId(),
-                            request.quantity()
-                    )
-            );
-        }
-
-        if ("REMOVE".equalsIgnoreCase(request.action())) {
-            return ApiResponse.ok(
-                    "Item removed from cart",
-                    cartService.removeItem(
-                            request.productId()
-                    )
-            );
-        }
+        CartItem item = cartService.addItem(request);
 
         return ApiResponse.ok(
-                "Item added to cart",
-                cartService.addItem(request)
+                "Item added to cart successfully",
+                item
         );
     }
 
@@ -78,28 +55,34 @@ public class CartController {
             @RequestBody CartItemRequest request
     ) {
 
+        CartItem updatedItem = cartService.updateQuantity(
+                productId,
+                request.quantity()
+        );
+
         return ApiResponse.ok(
-                "Item quantity updated",
-                cartService.updateQuantity(
-                        productId,
-                        request.quantity()
-                )
+                "Cart item updated successfully",
+                updatedItem
         );
     }
 
+    // =========================================================
     // OPTIONAL POST UPDATE
+    // =========================================================
     @PostMapping("/items/{productId}/quantity")
     public ApiResponse<CartItem> updateItemByPost(
             @PathVariable Long productId,
             @RequestBody CartItemRequest request
     ) {
 
+        CartItem updatedItem = cartService.updateQuantity(
+                productId,
+                request.quantity()
+        );
+
         return ApiResponse.ok(
-                "Item quantity updated",
-                cartService.updateQuantity(
-                        productId,
-                        request.quantity()
-                )
+                "Cart item updated successfully",
+                updatedItem
         );
     }
 
@@ -111,21 +94,27 @@ public class CartController {
             @PathVariable Long productId
     ) {
 
+        List<CartItem> items = cartService.removeItem(productId);
+
         return ApiResponse.ok(
-                "Item removed from cart",
-                cartService.removeItem(productId)
+                "Item removed from cart successfully",
+                items
         );
     }
 
+    // =========================================================
     // OPTIONAL POST REMOVE
+    // =========================================================
     @PostMapping("/items/{productId}/remove")
     public ApiResponse<List<CartItem>> removeItemByPost(
             @PathVariable Long productId
     ) {
 
+        List<CartItem> items = cartService.removeItem(productId);
+
         return ApiResponse.ok(
-                "Item removed from cart",
-                cartService.removeItem(productId)
+                "Item removed from cart successfully",
+                items
         );
     }
 
@@ -133,12 +122,13 @@ public class CartController {
     // CLEAR ENTIRE CART
     // =========================================================
     @DeleteMapping("/items")
-    public ApiResponse<?> clearCart() {
+    public ApiResponse<List<CartItem>> clearCart() {
 
-        cartService.clearCart();
+        List<CartItem> items = cartService.clearCart();
 
         return ApiResponse.ok(
-                "Cart cleared successfully", null
+                "Cart cleared successfully",
+                items
         );
     }
 }

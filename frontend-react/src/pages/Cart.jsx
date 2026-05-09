@@ -1,14 +1,23 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { fetchCart, updateCartItem, removeFromCart, clearCart } from '../features/cartSlice'
+import {
+  fetchCart,
+  updateCartItem,
+  removeFromCart,
+  clearCart,
+} from '../features/cartSlice'
 import { formatCurrencyVND } from '../utils/currency'
 
 const Cart = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { items, total, isLoading, error } = useSelector(state => state.cart)
-  const { user } = useSelector(state => state.auth)
+
+  const { items, total, isLoading, error } = useSelector(
+    (state) => state.cart
+  )
+
+  const { user } = useSelector((state) => state.auth)
 
   useEffect(() => {
     if (user) {
@@ -16,13 +25,19 @@ const Cart = () => {
     }
   }, [dispatch, user])
 
-  const handleUpdateQuantity = (id, newQuantity) => {
+  const handleUpdateQuantity = (productId, newQuantity) => {
     if (newQuantity < 1) return
-    dispatch(updateCartItem({ id, quantity: newQuantity }))
+
+    dispatch(
+      updateCartItem({
+        id: productId,
+        quantity: newQuantity,
+      })
+    )
   }
 
-  const handleRemoveItem = (id) => {
-    dispatch(removeFromCart(id))
+  const handleRemoveItem = (productId) => {
+    dispatch(removeFromCart(productId))
   }
 
   const handleClearCart = () => {
@@ -38,8 +53,14 @@ const Cart = () => {
   if (!user) {
     return (
       <div className="text-center py-12">
-        <h1 className="text-2xl font-bold text-gray-900 mb-4">Shopping Cart</h1>
-        <p className="text-gray-600 mb-6">Please login to view your cart</p>
+        <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          Shopping Cart
+        </h1>
+
+        <p className="text-gray-600 mb-6">
+          Please login to view your cart
+        </p>
+
         <Link
           to="/login"
           className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
@@ -61,7 +82,10 @@ const Cart = () => {
   if (error) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-600 mb-4">Error loading cart: {error}</p>
+        <p className="text-red-600 mb-4">
+          Error loading cart: {error}
+        </p>
+
         <button
           onClick={() => dispatch(fetchCart())}
           className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
@@ -74,17 +98,20 @@ const Cart = () => {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Shopping Cart</h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-8">
+        Shopping Cart
+      </h1>
 
       {items.length === 0 ? (
         <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <svg className="w-24 h-24 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-1.1 5H19M7 13l-1.1 5M7 13h10m0 0v8a2 2 0 01-2 2H9a2 2 0 01-2-2v-8" />
-            </svg>
-          </div>
-          <h2 className="text-2xl font-semibold text-gray-900 mb-4">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Add some products to get started</p>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            Your cart is empty
+          </h2>
+
+          <p className="text-gray-600 mb-6">
+            Add some products to get started
+          </p>
+
           <Link
             to="/products"
             className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
@@ -102,6 +129,7 @@ const Cart = () => {
                   <h2 className="text-xl font-semibold text-gray-900">
                     Cart Items ({items.length})
                   </h2>
+
                   <button
                     onClick={handleClearCart}
                     className="text-red-600 hover:text-red-800 font-medium"
@@ -113,59 +141,66 @@ const Cart = () => {
 
               <div className="divide-y divide-gray-200">
                 {items.map((item) => (
-<div key={item.productId} className="p-6 flex items-center">                    <div className="flex-shrink-0 w-20 h-20 bg-gray-200 rounded-md flex items-center justify-center mr-4">
-                      {item.product?.imageUrl ? (
-                        <img
-                          src={item.product.imageUrl}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover rounded-md"
-                        />
-                      ) : (
-                        <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      )}
-                    </div>
-
+                  <div
+                    key={item.productId}
+                    className="p-6 flex items-center"
+                  >
                     <div className="flex-1">
                       <h3 className="text-lg font-medium text-gray-900">
-                        {item.product?.name}
+                        {item.name}
                       </h3>
-                      <p className="text-gray-600">{formatCurrencyVND(item.price)} each</p>
+
+                      <p className="text-gray-600">
+                        {formatCurrencyVND(item.price)} each
+                      </p>
                     </div>
 
                     <div className="flex items-center space-x-4">
                       <div className="flex items-center border border-gray-300 rounded-md">
                         <button
-                          onClick={() => handleUpdateQuantity(item.productId, item.quantity - 1)}
+                          onClick={() =>
+                            handleUpdateQuantity(
+                              item.productId,
+                              item.quantity - 1
+                            )
+                          }
                           className="px-3 py-1 text-gray-600 hover:text-gray-800"
                         >
                           -
                         </button>
+
                         <span className="px-3 py-1 border-l border-r border-gray-300">
                           {item.quantity}
                         </span>
+
                         <button
-                          onClick={() => handleUpdateQuantity(item.productId, item.quantity + 1)}
+                          onClick={() =>
+                            handleUpdateQuantity(
+                              item.productId,
+                              item.quantity + 1
+                            )
+                          }
                           className="px-3 py-1 text-gray-600 hover:text-gray-800"
                         >
                           +
                         </button>
                       </div>
 
-                      <div className="text-right">
+                      <div className="text-right min-w-[120px]">
                         <p className="text-lg font-semibold text-gray-900">
-                          {formatCurrencyVND(item.price * item.quantity)}
+                          {formatCurrencyVND(
+                            item.price * item.quantity
+                          )}
                         </p>
                       </div>
 
                       <button
-                        onClick={() => handleRemoveItem(item.productId)}
+                        onClick={() =>
+                          handleRemoveItem(item.productId)
+                        }
                         className="text-red-600 hover:text-red-800"
                       >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
+                        Remove
                       </button>
                     </div>
                   </div>
@@ -177,25 +212,40 @@ const Cart = () => {
           {/* Order Summary */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Order Summary</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                Order Summary
+              </h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="text-gray-900">{formatCurrencyVND(total)}</span>
+
+                  <span className="text-gray-900">
+                    {formatCurrencyVND(total)}
+                  </span>
                 </div>
+
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
+
                   <span className="text-gray-900">Free</span>
                 </div>
+
                 <div className="flex justify-between">
                   <span className="text-gray-600">Tax</span>
-                  <span className="text-gray-900">{formatCurrencyVND(total * 0.1)}</span>
+
+                  <span className="text-gray-900">
+                    {formatCurrencyVND(total * 0.1)}
+                  </span>
                 </div>
+
                 <div className="border-t border-gray-200 pt-3">
                   <div className="flex justify-between text-lg font-semibold">
                     <span>Total</span>
-                    <span>{formatCurrencyVND(total * 1.1)}</span>
+
+                    <span>
+                      {formatCurrencyVND(total * 1.1)}
+                    </span>
                   </div>
                 </div>
               </div>
