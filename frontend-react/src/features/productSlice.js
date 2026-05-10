@@ -6,9 +6,19 @@ export const fetchProducts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const response = await productAPI.getAllProducts(params)
-      return response.data
+      
+      // Ensure response data is an array or paginated object
+      if (Array.isArray(response.data)) {
+        return response.data
+      } else if (response.data && typeof response.data === 'object') {
+        return response.data
+      } else {
+        return rejectWithValue('Invalid products response format: ' + typeof response.data)
+      }
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch products')
+      console.error('fetchProducts error:', error)
+      const message = error.response?.data?.message || error.message || 'Failed to fetch products'
+      return rejectWithValue(message)
     }
   }
 )
@@ -30,9 +40,17 @@ export const fetchCategories = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await productAPI.getCategories()
-      return response.data
+      
+      // Categories should be an array of strings or objects
+      if (Array.isArray(response.data)) {
+        return response.data
+      } else {
+        return rejectWithValue('Invalid categories response format: ' + typeof response.data)
+      }
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch categories')
+      console.error('fetchCategories error:', error)
+      const message = error.response?.data?.message || error.message || 'Failed to fetch categories'
+      return rejectWithValue(message)
     }
   }
 )
@@ -105,6 +123,10 @@ const productSlice = createSlice({
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
         state.categories = action.payload
+      })
+      .addCase(fetchCategories.rejected, (state, action) => {
+        console.error('Failed to fetch categories:', action.payload)
+        state.categories = []
       })
       .addCase(searchProducts.pending, (state) => {
         state.isLoading = true

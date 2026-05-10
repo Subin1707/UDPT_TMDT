@@ -85,19 +85,25 @@ const Products = () => {
           >
             All Categories
           </button>
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => handleCategoryChange(category.id)}
-              className={`px-4 py-2 rounded-md transition-colors ${
-                selectedCategory === category.id
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-              }`}
-            >
-              {category.name}
-            </button>
-          ))}
+          {categories && Array.isArray(categories) && categories.map((category, index) => {
+            // Handle both string categories and object categories
+            const categoryId = typeof category === 'string' ? category : category.id
+            const categoryName = typeof category === 'string' ? category : category.name
+            
+            return (
+              <button
+                key={categoryId || index}
+                onClick={() => handleCategoryChange(categoryId)}
+                className={`px-4 py-2 rounded-md transition-colors ${
+                  selectedCategory === categoryId
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                }`}
+              >
+                {categoryName}
+              </button>
+            )
+          })}
         </div>
 
         {(searchQuery || selectedCategory) && (

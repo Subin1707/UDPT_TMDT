@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/deliveries")
+@RequestMapping("/deliveries")
 public class DeliveryController {
     @GetMapping("/{orderId}")
     public ApiResponse<Delivery> track(@PathVariable Long orderId) {

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/analytics")
+@RequestMapping("/analytics")
 public class AnalyticsController {
     @GetMapping("/dashboard")
     public ApiResponse<Map<String, Object>> dashboard() {

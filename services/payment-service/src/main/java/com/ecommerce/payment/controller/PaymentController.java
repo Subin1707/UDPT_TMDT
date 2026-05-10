@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/payments")
+@RequestMapping("/payments")
 public class PaymentController {
     @GetMapping("/order/{orderId}")
     public ApiResponse<Payment> findByOrder(@PathVariable Long orderId) {
@@ -23,7 +23,7 @@ public class PaymentController {
 
     @PostMapping
     public ApiResponse<Payment> pay(@RequestBody PaymentRequest request) {
-        Payment payment = new Payment(System.currentTimeMillis(), request.orderId(), request.amount(), PaymentStatus.SUCCESS);
+        Payment payment = new Payment(System.currentTimeMillis(), request.orderId(), request.amount(), PaymentStatus.COMPLETED);
         return ApiResponse.ok("Payment simulated", payment);
     }
 }

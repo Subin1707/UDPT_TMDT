@@ -3,6 +3,8 @@
 -- MYSQL 8+
 -- FIXED FOR CURRENT SPRING BOOT CART SERVICE
 -- =========================================================
+-- This schema is synchronized with docker/init.sql
+-- Updated: May 9, 2026
 
 DROP DATABASE IF EXISTS defaultdb;
 CREATE DATABASE defaultdb;

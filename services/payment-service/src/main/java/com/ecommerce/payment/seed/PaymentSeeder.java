@@ -4,14 +4,34 @@ import com.ecommerce.payment.entity.Payment;
 import com.ecommerce.payment.entity.PaymentStatus;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentSeeder {
-    private static final List<Payment> PAYMENTS = List.of(
-            new Payment(201L, 101L, BigDecimal.valueOf(250000), PaymentStatus.SUCCESS),
-            new Payment(202L, 102L, BigDecimal.valueOf(1290000), PaymentStatus.SUCCESS),
-            new Payment(203L, 103L, BigDecimal.valueOf(650000), PaymentStatus.PENDING)
-    );
+    private static final List<Payment> PAYMENTS = new ArrayList<>();
+
+    static {
+        Payment p1 = new Payment();
+        p1.setId(201L);
+        p1.setOrderId(101L);
+        p1.setAmount(BigDecimal.valueOf(250000));
+        p1.setStatus(PaymentStatus.COMPLETED);
+        PAYMENTS.add(p1);
+
+        Payment p2 = new Payment();
+        p2.setId(202L);
+        p2.setOrderId(102L);
+        p2.setAmount(BigDecimal.valueOf(1290000));
+        p2.setStatus(PaymentStatus.COMPLETED);
+        PAYMENTS.add(p2);
+
+        Payment p3 = new Payment();
+        p3.setId(203L);
+        p3.setOrderId(103L);
+        p3.setAmount(BigDecimal.valueOf(650000));
+        p3.setStatus(PaymentStatus.PENDING);
+        PAYMENTS.add(p3);
+    }
 
     public static List<Payment> findAll() {
         return PAYMENTS;
@@ -19,7 +39,7 @@ public class PaymentSeeder {
 
     public static Payment findByOrderId(Long orderId) {
         return PAYMENTS.stream()
-                .filter(payment -> payment.orderId().equals(orderId))
+                .filter(payment -> payment.getOrderId().equals(orderId))
                 .findFirst()
                 .orElse(null);
     }
