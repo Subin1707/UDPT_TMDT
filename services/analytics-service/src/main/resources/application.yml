@@ -4,9 +4,9 @@ spring:
   application:
     name: analytics-service
   datasource:
-    url: jdbc:mysql://thuongmaidientu1-quyenthaoxyz123-6026.k.aivencloud.com:25291/defaultdb?ssl-mode=REQUIRED
-    username: avnadmin
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://localhost:3306/defaultdb
+    username: root
+    password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       maximum-pool-size: 3
