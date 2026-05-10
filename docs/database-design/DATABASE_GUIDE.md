@@ -5,7 +5,7 @@
 The e-commerce system uses **Aiven MySQL** (remote cloud database) with automatic schema management via **Hibernate ORM**.
 
 ### Current Configuration
-- **Database Host**: `thuongmaidientu1-quyenthaoxyz123-6026.k.aivencloud.com:25291`
+- **Database Host**: `YOUR_AIVEN_HOST:25291`
 - **Database Name**: `defaultdb`
 - **Username**: `avnadmin`
 - **Password**: Set via `DB_PASSWORD` environment variable

@@ -17,7 +17,7 @@ The cart service (and other services) tried to connect to an Aiven MySQL cloud d
 
 ### Step 1: Get Database Password
 The project uses **Aiven MySQL cloud database** (remote, not local):
-- **Host**: `thuongmaidientu1-quyenthaoxyz123-6026.k.aivencloud.com:25291`
+- **Host**: `YOUR_AIVEN_HOST`
 - **Username**: `avnadmin`
 - **Password**: ❌ NOT SET - You need to get this from:
   1. Project maintainer or team
