@@ -149,7 +149,6 @@ export JAVA_HOME=/home/codespace/java/21.0.10-ms
 ## Chay Ha Tang
 
 ```powershell
-docker compose -f docker/docker-compose.yml up -d
 ```
 
 ## Chay Frontend
